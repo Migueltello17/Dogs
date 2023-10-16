@@ -1,0 +1,29 @@
+.cardContainer {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .cardImg {
+    max-width: 100%;
+    height: 200px;  
+  }
+  
+  .carContain {
+    margin-top: 10px; 
+  }
+
+  .temperament {
+    max-height: 100px; 
+    overflow: hidden;
+    font-size: 10px; 
+  }
+
+  /* Height:  Ajusta la altura de la imagen a un valor fijo
+  Margin-top: Espacio entre la imagen y el contenido 
+  Max-height: Establece una altura máxima para la sección de temperamento
+  Font-size: Reduce el tamaño del texto de temperament */

@@ -1,0 +1,13 @@
+.cardsContainer {
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* //Gap: Espacio entre las tarjetas 
+//Grid-template-columns: Define el ancho de cada tarjeta y su orden
+// Display: grid: Cambia a display: grid para controlar el tamaño y el orden */
