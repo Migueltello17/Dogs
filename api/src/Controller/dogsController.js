@@ -1,20 +1,21 @@
 const axios = require('axios');
+const {Dogs, Temperaments} = require('../db');
 require('dotenv').config();
 const { API_KEY, URL } = process.env;
-const {Dogs, Temperament} = require('../db');
 const { Op } = require('sequelize');
 
 const getDogs = async () =>{
+  try {
     //consulto la base de datos
-    const dbDogsRaw = await Dogs.findAll({include: [{
-      model: Temperament,
+    const dbDogsRaw = await Dogs.findAll({include: {
+      model: Temperaments,
       attributes: ['name'],
       through: {
         attributes: [],
-      }
-    }]});
+      },
+    }});
     
-    const dbDogs = dbDogsRaw.map(dog => ({
+    const dbDogs = dbDogsRaw.map((dog) => ({
       id: dog.id,
       name: dog.name,
       temperament: dog.Temperaments.map(temp => temp.name),
@@ -23,25 +24,28 @@ const getDogs = async () =>{
     }))
 
     //consulto la api
-    const response = await axios(`${URL}${API_KEY}&limit=100`);
+    const response = await axios(`${URL}?${API_KEY}&limit=100`);
+    
     const dogsApi = response.data;
     console.log("esto es response ", dogsApi);
-    const dogs = dogsApi.map(dog =>{
+    const dogs = dogsApi.map((dog) => {
         const temperaments = dog.temperament.split(',').map(temp => temp.trim())
         return {
             id: dog.id,
             name: dog.name,
             temperament: temperaments,
+            height: dog.height.metric,
             weight: dog.weight.metric,
+            life_span: dog.life_span,
             image: dog.image && dog.image.url
         }
-        
-
     })
     return [...dbDogs, ...dogs];
-}
-
-
+} catch (error) {
+  console.error('Error al obtener perros:', error);
+  throw error;
+  }
+};
 
 const getDogByName = async (name)=>{
   //const name = nameQuery.toLowerCase();
@@ -71,32 +75,28 @@ const getDogByName = async (name)=>{
   
 }
 
-
-
 const createNewDog = async (image, name, weight_min, weight_max, height_min, height_max, life_span_min, life_span_max, temperament) => {
   const height = `${height_min} - ${height_max}`;
   const weight = `${weight_min} - ${weight_max}`;
   const life_span = `${life_span_min} - ${life_span_max} years`;
   const newDog = await Dogs.create({
-    image,
-    name,
-    weight,
-    height,
-    life_span
+    image: image,
+    name: name,
+    weight: weight,
+    height: height,
+    life_span: life_span,
   })
   //asocio los temperamentos
-  const temp = await Temperament.findAll({where:{name: temperament}});
+  const temp = await Temperaments.findAll({where:{name: temperament}});
   await newDog.addTemperament(temp);
   return newDog;
 
 }
 
-
-
 const getDogByID = async (id, source) => {
   const dog = source === 'api'
     ? (await axios.get(`https://api.thedogapi.com/v1/breeds/${id}`)).data
-    : await Dogs.findByPk(id, {include: {model: Temperament, attributes: ['name'], through:{attributes:[],}}});
+    : await Dogs.findByPk(id, {include: {model: Temperaments, attributes: ['name'], through:{attributes:[],}}});
 
     if(source === 'api'){
       imageid = dog.reference_image_id;
@@ -116,7 +116,6 @@ const getDogByID = async (id, source) => {
       }
     }
     
-    //const temperaments = dog.Temperaments;
     const temperaments = dog.Temperaments.map(temp => temp.name);
     //console.log("esto es temps: ", temps);
     return {

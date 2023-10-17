@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Temperament } = require('../db');
+const { Temperaments } = require('../db');
 require('dotenv').config;
 const { API_KEY} = process.env;
 
@@ -27,12 +27,12 @@ const fillTempDb = async (temperaments) =>{
       name: temperament,
     }));
 
-    const tempCount = await Temperament.count();
+    const tempCount = await Temperaments.findOne();
     if(!tempCount){
-        await Temperament.bulkCreate(tempDb);
+        await Temperaments.bulkCreate(tempDb);
     }
   } catch (error) {
-    console.error('Database Error:', error);
+    throw new Error('La base de datos de Temperaments ya existe')
   }
 }
 

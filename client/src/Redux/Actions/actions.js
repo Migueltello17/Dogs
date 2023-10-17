@@ -9,15 +9,15 @@ import {
     FILTER, 
     ORDER, 
     FILTERORIGIN, 
-    ORDERBYWEIGHT } from "./actions-type";
+    ORDERBYWEIGHT } from "./actions-type.js";
 
 
 export const getDogs = () => {
-    return async function(dispatch){
+    return async function(dispatch) {
         const dogs = (await (axios.get('http://localhost:3001/dogs'))).data;
         dispatch({type: GET_DOGS, payload: dogs});
     }
-}
+};
 
 export const getDog = (id) => {
     return async function(dispatch){
@@ -40,7 +40,7 @@ export const deleteDetails = (id) => {
     }
 }
 
-export const getTeperaments = ()=> {
+export const getTemperaments = ()=> {
     return async function(dispatch){
         const temperaments = (await (axios.get(`http://localhost:3001/temperaments`))).data;
         dispatch({type: GET_TEMPERAMENTS, payload: temperaments})

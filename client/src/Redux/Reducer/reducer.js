@@ -35,7 +35,7 @@ switch(action.type){
        };
 
    case GET_DOG:
-       return{state, dog:action.payload}
+       return{...state, dog:action.payload}
 
    case GET_DETAILS:
        return{
@@ -52,7 +52,7 @@ switch(action.type){
    case GET_TEMPERAMENTS:{
        return{
            ...state,
-           temperaments:action.payload
+           temperaments: action.payload
        }
    }
 
@@ -132,30 +132,8 @@ switch(action.type){
            dogsFiltered: filterByOrigin,
            filter: true, 
        }
-           
-   // case ORDERBYWEIGHT:
+
        
-   //     let orderByWeight = [];
-   //     if(action.payload === "AZ"){
-   //         orderByName = [...state.dogsBackUP].sort((prev, next) =>{
-   //             if(prev.name > next.name) return 1;
-   //             if(prev.name < next.name) return -1;
-   //             return 0;
-   //         })
-   //     } else if (action.payload === "ZA"){
-   //         orderByName = [...state.dogsBackUP].sort((prev, next) =>{
-   //             if(prev.name > next.name) return -1;
-   //             if(prev.name < next.name) return 1;
-   //             return 0;
-   //         })
-   //     } else return state;
-   //     return{
-   //         ...state,
-   //         dogs: [...orderByName].splice(0, ITEMS_PER_PAGE),
-   //         dogsBackUP: orderByName,
-           
-   //     }
-   
   case ORDERBYWEIGHT:
  const sortedWeight =
    action.payload === "minWeight"
@@ -183,11 +161,8 @@ switch(action.type){
    dogs: [...sortedWeight].splice(0, ITEMS_PER_PAGE),
  };
            
-           
-       
-   default:
-       return {...state}
+   default: return state;
 }
-}
+};
 
 export default rootReducer;

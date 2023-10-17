@@ -3,7 +3,7 @@ import Cards from '../../Components/Cards/Cards';
 import './Home.css';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useEffect } from 'react';
-import { filterDogsAction, filterOriginAction, getDogs, getTeperaments, 
+import { filterDogsAction, filterOriginAction, getDogs, getTemperaments, 
   orderDogsAction, paginateDogs, orderByWeightAction } from '../../Redux/Actions/actions';
 
 
@@ -16,7 +16,7 @@ const Home = () => {
 
     useEffect(()=>{
         dispatch(getDogs());
-        dispatch(getTeperaments());
+        dispatch(getTemperaments());
         // eslint-disable-next-line
     },[]);
 

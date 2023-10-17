@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import './Create.css';
-import { getTeperaments, postDog } from '../../Redux/Actions/actions';
+import { getTemperaments, postDog } from '../../Redux/Actions/actions';
 import validate from './validate';
 
 const Create = () => {
   const dispatch = useDispatch();
   useEffect (()=>{
-    dispatch(getTeperaments());
+    dispatch(getTemperaments());
     // eslint-disable-next-line
   },[])
 
@@ -220,7 +220,8 @@ const Create = () => {
           <select
             id="temperament"
             name="temperament"
-            value={state.temperament}
+            // value={state.temperament} 
+            
             onChange={handleChange}
           >
             <option value="">Selecciona un temperamento</option>

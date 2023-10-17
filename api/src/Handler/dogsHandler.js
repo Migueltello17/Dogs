@@ -1,8 +1,8 @@
 const { getDogs, getDogByName, createNewDog, getDogByID } = require("../Controller/dogsController");
 
 const getDogsHandler = async (req, res)=>{
-    const { name } = req.query;
     try {
+        const { name } = req.query;
         const results = name? await getDogByName(name) : await getDogs();
         res.status(200).json(results);
         
@@ -22,18 +22,6 @@ const getDogByIdHandler = async(req,res) =>{
         res.status(400).json({ error:error.message });
     }
 }
-
-
-// const createNewDogHandler = async (req, res)=>{
-//     try {
-//         const {image, name, weight, height, life_span, temperament} = req.body;
-//         const newDog = await createNewDog(image, name, weight, height, life_span, temperament);
-//         res.status(200).json(newDog);
-//     } catch (error) {
-//         res.status(400).json({error:error.message});
-//     }
-
-// }
 
 const createNewDogHandler = async (req, res)=>{
     try {
