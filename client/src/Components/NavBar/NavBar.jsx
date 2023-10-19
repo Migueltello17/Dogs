@@ -12,7 +12,7 @@ const NavBar = () => {
         <div className='navbar-links-cont'>
           <Link to={"/home"}>Home</Link>
           <Link to={"/create"}>Create</Link>
-          <Link to={"/about"}>About</Link>
+          <Link to={"/about"}>About me</Link>
           </div>
         <form className='navbar-search-cont'>
           <SearchBar/>

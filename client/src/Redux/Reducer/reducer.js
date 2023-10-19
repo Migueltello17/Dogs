@@ -10,6 +10,7 @@ import {
     FILTERORIGIN, 
     ORDERBYWEIGHT} from '../Actions/actions-type';
 
+    //Inicializar el initialState
 const initialState = {
 dogs: [],
 temperaments:[],
@@ -23,19 +24,23 @@ filter: false,
 dogsSortedWeight: [],    
 }
 
+    //Definir el rootReducer
 const rootReducer = (state = initialState, action) =>{
 const ITEMS_PER_PAGE = 8;
 
 switch(action.type){
    case GET_DOGS:
-       return {...state, 
-           dogs:[...action.payload].splice(0, ITEMS_PER_PAGE), 
-           dogsBackUP:action.payload,
-           dogsBackUp2: action.payload
+       return {
+        ...state, 
+        dogs:[...action.payload].splice(0, ITEMS_PER_PAGE), 
+        dogsBackUP: action.payload,
+        dogsBackUp2: action.payload
        };
 
    case GET_DOG:
-       return{...state, dog:action.payload}
+       return{
+        ...state, 
+        dog: action.payload}
 
    case GET_DETAILS:
        return{
@@ -123,9 +128,7 @@ switch(action.type){
            filterByOrigin = [...state.dogsBackUP].filter((d) => isNaN(d.id) );
        }else if(action.payload === 'API'){
                filterByOrigin = [...state.dogsBackUP].filter((d) => !isNaN(d.id) );
-       }
-           
-            
+       }    
        return{
            ...state,
            dogs: filterByOrigin.splice(0, ITEMS_PER_PAGE),
@@ -159,10 +162,12 @@ switch(action.type){
  return {
    ...state,
    dogs: [...sortedWeight].splice(0, ITEMS_PER_PAGE),
- };
-           
-   default: return state;
-}
+    };
+   
+   
+    default: return state;
+    }
 };
+
 
 export default rootReducer;

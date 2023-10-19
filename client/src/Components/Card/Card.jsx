@@ -1,23 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './card.css';
 
-const Card = ({id, name, weight, height, life_span, image, temperament}) => {
+const Card = ({name, weight, height, life_span, image, temperament}) => {
   return (
-        <Link to={`/detail/${id}`}>
-        <div className='cardContainer'>
-            <img className='cardImg' src={image} alt={name}/>
-            <div className='carContain'>
-                <p>{name}</p>
-                <h4>Peso: {weight}</h4>
-                <h4>Altura: {height}</h4>
-                <h4>Esperanza de vida: {life_span}</h4>
-                <div className='temperament'>
-                    {temperament.map((temp, i) => <p key={i}>{temp}</p>)}
-                </div>
-            </div>
+    <div className='.cardContainer'>
+        <div className='card'>
+    <div className='card-title-cont'>
+        <h4>{name}</h4>
+    </div>
+    <div className='card-info-cont'>
+        <h5>Weight {weight}</h5>
+        <h5>Height: {height}</h5>
+        <h5>Temperament: {temperament}</h5>
+        <h5>Life span: {life_span}</h5>
+        <div className='card-img-cont'>
+          <img src={image} alt="imagen dog" />
         </div>
-    </Link>
+    </div>
+    </div>
+</div>
   )
 }
 

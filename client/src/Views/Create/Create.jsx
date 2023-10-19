@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import './Create.css';
+import { useEffect } from 'react'
 import { getTemperaments, postDog } from '../../Redux/Actions/actions';
 import validate from './validate';
 
+  //Recibe el dispatch de actions
 const Create = () => {
   const dispatch = useDispatch();
-  useEffect (()=>{
-    dispatch(getTemperaments());
-    // eslint-disable-next-line
-  },[])
-
+  
   const temperaments = useSelector((state)=>state.temperaments)
+  
+  useEffect (()=> {
+    dispatch(getTemperaments());
+  }, [dispatch]);
+
   
   const [state, setState] = useState({
     name: "",
@@ -37,7 +40,6 @@ const Create = () => {
     temperament: "",
   });
   
-  
   const handleChange = (event) => {
     if(event.target.name === 'temperament'){
       if(state.temperament.includes(event.target.value)) return;
@@ -46,7 +48,6 @@ const Create = () => {
         [event.target.name]: [...state[event.target.name], event.target.value],
       });
     }else{
-
       setState({
         ...state,
         [event.target.name]: event.target.value,
@@ -64,7 +65,7 @@ const Create = () => {
   console.log("esto es el input:", state)
   console.log("esto es errors: ", errors)
 
-  const disableButton = () => {
+  const disabledFunction = () => {
     let disabled;
     for(let error in errors){
       if(errors[error] === "") disabled = false;
@@ -103,7 +104,8 @@ const Create = () => {
 
   return (
     <div className='container'>
-      <h1>Crear una nueva raza</h1>
+      <h1>¡Crea a tu perro!</h1>
+      <h4> Debes completar todos los campos </h4>
       <form onSubmit={handleSubmit}>
         <div className='formGroup'>
           <label htmlFor="name">Nombre:</label>
@@ -115,7 +117,7 @@ const Create = () => {
             onChange={handleChange}
           />
         </div>
-        {errors.name ? <label>{errors.name}</label> : null}
+        {errors.name ? <label>{errors.name}</label> : null} 
         
         <div className='formGroup'>
           <label htmlFor="image">image:</label>
@@ -241,7 +243,7 @@ const Create = () => {
           </span>
         ))}
         </div>
-        <button type="submit" disabled={disableButton()} >Guardar</button>
+        <input disabled={disabledFunction()} type="submit" />
       </form>
     </div>
   );

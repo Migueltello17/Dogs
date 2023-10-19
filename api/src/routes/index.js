@@ -4,11 +4,11 @@ const { Router } = require('express');
 const dogRouter = require('./dog');
 const temperamentRouter = require('./temperaments');
 
-const router = Router();
+const mainRouter = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-router.use('/dogs', dogRouter);
-router.use('/temperaments', temperamentRouter);
+mainRouter.use('/dogs', dogRouter);
+mainRouter.use('/temperaments', temperamentRouter);
 
-module.exports = router;
+module.exports = mainRouter;

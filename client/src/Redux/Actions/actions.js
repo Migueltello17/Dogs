@@ -14,46 +14,66 @@ import {
 
 export const getDogs = () => {
     return async function(dispatch) {
-        const dogs = (await (axios.get('http://localhost:3001/dogs'))).data;
-        dispatch({type: GET_DOGS, payload: dogs});
+        try {
+            const response = await axios.get("http://localhost:3001/dogs/")
+            dispatch({
+                type: GET_DOGS, 
+                payload: response.data});
+        } catch (error) {
+        }
     }
 };
 
 export const getDog = (id) => {
     return async function(dispatch){
-        const dog = (await (axios.get(`http://localhost:3001/dogs/${id}`))).data;
-        dispatch({type: GET_DOG, payload: dog});
+        try {
+            const response = await axios.get(`http://localhost:3001/dogs/${id}`);
+            dispatch({
+                type: GET_DOG, 
+                payload: response.data});
+        } catch (error) {
+        }
     }
 }
 
 export const getDetails = (id) => {
     return async function(dispatch){
-        const dog = (await (axios.get(`http://localhost:3001/dogs/${id}`))).data;
-        dispatch({type: GET_DETAILS, payload: dog});
+        try {
+            const response = await axios.get(`http://localhost:3001/dogs/${id}`);
+            dispatch({
+                type: GET_DETAILS, 
+                payload: response.data});
+        } catch (error) {
+        }
     }
 }
 
 export const deleteDetails = (id) => {
     return async function(dispatch){
-        
         dispatch({type: DELETE_DETAILS});
     }
 }
 
 export const getTemperaments = ()=> {
     return async function(dispatch){
-        const temperaments = (await (axios.get(`http://localhost:3001/temperaments`))).data;
-        dispatch({type: GET_TEMPERAMENTS, payload: temperaments})
+        try {
+            const response = await axios.get("http://localhost:3001/temperaments/");
+            dispatch({
+                type: GET_TEMPERAMENTS, 
+                payload: response.data})
+        } catch (error) {
+        }
     }
 }
 
 export const postDog = (state) => {
     return async function(dispatch){
         try {
-            await axios.post('http://localhost:3001/dogs', state);
+            await axios.post("http://localhost:3001/dogs/", state);
             alert('Nueva raza creada exitosamente');
         } catch (error) {
-            alert("La raza nueva no se creo, ocurrió un error");
+            console.log(error)
+            alert(error.response.data.error);
         }
     }
 }
@@ -66,6 +86,7 @@ export const paginateDogs = (order) =>{
                 payload: order
             })
         } catch (error) {
+            alert(error.response.data.error);
         }
     }
 }
@@ -91,6 +112,7 @@ export const orderDogsAction = (order) =>{
                 payload: order
             })
         } catch (error) {  
+            alert(error.response.data.error);
         }
     }
 }
@@ -103,6 +125,7 @@ export const filterOriginAction = (origin) => {
                 payload: origin
             })
         } catch (error) {
+            alert(error.response.data.error);
         }
     }
 }
@@ -115,6 +138,7 @@ export const orderByWeightAction = (order) =>{
                 payload: order
             })
         } catch (error) {
+            alert(error.response.data.error);
         }
     };
 };

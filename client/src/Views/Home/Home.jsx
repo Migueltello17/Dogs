@@ -1,17 +1,15 @@
 import React from 'react'
 import Cards from '../../Components/Cards/Cards';
 import './Home.css';
-import { useDispatch, useSelector } from 'react-redux'; 
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; 
 import { filterDogsAction, filterOriginAction, getDogs, getTemperaments, 
   orderDogsAction, paginateDogs, orderByWeightAction } from '../../Redux/Actions/actions';
 
-
 const Home = () => {
-
     const dispatch = useDispatch();
 
-    const dogs = useSelector((state)=>state.dogs);
+    const dogs = useSelector((state)=> state.dogs);
     const temperaments = useSelector((state) => state.temperaments)
 
     useEffect(()=>{
@@ -19,7 +17,6 @@ const Home = () => {
         dispatch(getTemperaments());
         // eslint-disable-next-line
     },[]);
-
     
     const paginate = (event) =>{
       dispatch(paginateDogs(event.target.name));
@@ -42,45 +39,43 @@ const Home = () => {
     }
 
   return (
-    <div className='container'>
-      <div className = 'filtersContainer'>
+    <div>
+      <div>
         <h4> Filtro/Ordenamientos:</h4>
-        
-        <span> orden alfabetico:</span>
+        <span> Orden alfabetico:</span>
         <select onClick={orderDogsAlf}  >
-          <option value="-">-</option>
-          <option value="AZ">A - Z</option>
-          <option value="ZA">Z - A</option>
+          <option value="-"> - </option>
+          <option value="AZ"> A-Z </option>
+          <option value="ZA"> Z-A </option>
         </select>
 
-        <span> orden por peso:</span>
+        <span> Orden por peso:</span>
         <select onChange={orderByWeight}  >
-          <option value="minWeight">menor peso</option>
-          <option value="maxWeight">mayor peso</option>
+        <option value="-"> - </option>
+          <option value="minWeight"> menor peso </option>
+          <option value="maxWeight"> mayor peso </option>
         </select>
         
-        
-        <span> filtrar por temperamentos:</span>
+        <span> Filtrar por temperamentos:</span>
         <select  name='temperament' onChange={filterDogs} >
-          <option value=''>temperamentos</option>
-          {temperaments.map((temp, index) => (
-              <option key={index} value={temp}>
-                {temp}
-              </option>
-            ))}
+          <option value=''> Temperamentos </option>
+          {temperaments.map(t => <option key={t} value={t}>{t}</option>
+            )}
         </select>
         
-        <span> filtrar por origen:</span>
+        <span> Filtrar por origen:</span>
         <select onChange={filterOrigin}>
-          <option value='DBB'>DBB</option>
-          <option value='API'>API</option>
+          <option value='DBB'> DBB </option>
+          <option value='API'> API </option>
         </select>
       </div>
-      <h1> Esto es el home</h1>
-      <Cards info={dogs}/>
       <div>
+        <h4>Paginado:</h4>
         <button onClick={paginate} name = 'prev'>Prev</button><button onClick={paginate} name='next'>Next</button>
       </div>
+      <h1> Esto es el home </h1>
+
+      <Cards dogs={dogs} />
     </div>
   )
 }

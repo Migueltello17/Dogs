@@ -1,7 +1,8 @@
-const express = require('express');
-const temperamentRouter = express.Router();
+const { Router } = require('express');
+const temperamentRouter = Router();
 const getTemperamentsHandler = require('../Handler/temperamentsHandler')
 
-temperamentRouter.get('/', getTemperamentsHandler);
+temperamentRouter.get("/", getTemperamentsHandler)
+
 
 module.exports = temperamentRouter;

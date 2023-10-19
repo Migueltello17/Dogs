@@ -1,79 +1,68 @@
 const axios = require('axios');
-const {Dogs, Temperaments} = require('../db');
-require('dotenv').config();
-const { API_KEY, URL } = process.env;
+const {Dogs, Temperaments, dogsTemperaments} = require('../db');
+const { API_KEY } = process.env;
 const { Op } = require('sequelize');
 
-const getDogs = async () =>{
-  try {
-    //consulto la base de datos
-    const dbDogsRaw = await Dogs.findAll({include: {
-      model: Temperaments,
-      attributes: ['name'],
-      through: {
-        attributes: [],
-      },
-    }});
-    
-    const dbDogs = dbDogsRaw.map((dog) => ({
+const getDogs = async () => {
+  const {data} = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
+  const allDogsApi = data.map((dog) => ({ // Buena práctica: Esta función de limpiar info se puede guardar en carpeta utils dentro de src para usarla en los controllers
       id: dog.id,
+      image: dog.image.url,
       name: dog.name,
-      temperament: dog.Temperaments.map(temp => temp.name),
-      weight: dog.weight,
-      image: dog.image,
-    }))
+      height: dog.height.metric,
+      weight: dog.weight.metric,
+      life_span: dog.life_span,
+      Temperaments: dog.temperament?.split(', ').map((temp) => ({
+          "name": temp
+      })),
+      created: false, //sirve para diferenciar si vino de la API o si fue creado desde la BD. También se podría con isNan id (?)
+  }))
 
-    //consulto la api
-    const response = await axios(`${URL}?${API_KEY}&limit=100`);
-    
-    const dogsApi = response.data;
-    console.log("esto es response ", dogsApi);
-    const dogs = dogsApi.map((dog) => {
-        const temperaments = dog.temperament.split(',').map(temp => temp.trim())
-        return {
-            id: dog.id,
-            name: dog.name,
-            temperament: temperaments,
-            height: dog.height.metric,
-            weight: dog.weight.metric,
-            life_span: dog.life_span,
-            image: dog.image && dog.image.url
-        }
-    })
-    return [...dbDogs, ...dogs];
-} catch (error) {
-  console.error('Error al obtener perros:', error);
-  throw error;
-  }
+  const allDogsDb = await Dogs.findAll({
+      include: {
+          model: Temperaments,
+          attributes: ["name"],
+          through: {
+              attributes: []
+          },
+      },
+  });
+
+  return [...allDogsDb,...allDogsApi];
 };
 
 const getDogByName = async (name)=>{
-  //const name = nameQuery.toLowerCase();
-  const dbSearchByName = await Dogs.findAll({
-    where:{
-      name:{
-        [Op.iLike]: `%${name}%`
-      }
-    }
-  })
-  if(dbSearchByName.length){
-    return dbSearchByName;
-  }
-  const response =  (await (axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}&api_key=${API_KEY}`))).data;
-  const dog = response[0];
-  const temperaments = dog.temperament.split(',').map(temp => temp.trim() );
-  const apiDog = {
+  const dogsApi = (await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)).data;
+    const dogApi = dogsApi.filter((dog) => dog.name.toLowerCase().includes(name.toLowerCase())).map((dog) => ({
         id: dog.id,
+        image: dog.image.url,
         name: dog.name,
         height: dog.height.metric,
         weight: dog.weight.metric,
-        temperament: temperaments,
         life_span: dog.life_span,
-        image: dog.image.url
-  }
-  return apiDog;
-  
-}
+        Temperaments: dog.temperament?.split(', ').map((temp) => ({
+            "name": temp
+        })),
+        created: false,
+    }))
+    const dogDb = await Dogs.findAll({where: {name: {
+        [Op.iLike]: `%${name}%`
+    }
+},
+        include: {
+            model: Temperaments,
+            attributes: ["name"],
+            through: {
+                attributes: []
+            },
+        },
+    });
+    if (dogApi.length === 0 && dogDb.length === 0) {
+        throw new Error(`La raza ${name} no existe en la base de datos`)
+    } else {
+        return [...dogDb,...dogApi];
+    }
+};
 
 const createNewDog = async (image, name, weight_min, weight_max, height_min, height_max, life_span_min, life_span_max, temperament) => {
   const height = `${height_min} - ${height_max}`;
@@ -93,41 +82,37 @@ const createNewDog = async (image, name, weight_min, weight_max, height_min, hei
 
 }
 
-const getDogByID = async (id, source) => {
-  const dog = source === 'api'
-    ? (await axios.get(`https://api.thedogapi.com/v1/breeds/${id}`)).data
-    : await Dogs.findByPk(id, {include: {model: Temperaments, attributes: ['name'], through:{attributes:[],}}});
-
-    if(source === 'api'){
-      imageid = dog.reference_image_id;
-      console.log("image id: ", imageid);
-      dogImage = (await axios.get(`https://api.thedogapi.com/v1/images/${imageid}`)).data.url
-      const temperaments = dog.temperament.split(',').map(temp => temp.trim());
-
-      return {
-        id: dog.id,
-        name: dog.name,
-        height: dog.height.metric,
-        weight: dog.weight.metric,
-        temperament: temperaments,
-        life_span: dog.life_span,
-        image: dogImage
-
-      }
-    }
-    
-    const temperaments = dog.Temperaments.map(temp => temp.name);
-    //console.log("esto es temps: ", temps);
-    return {
+const getDogByID = async (idRaza) => {
+  console.log(idRaza)
+  if (Number.isNaN(Number(idRaza))) {
+  const dog = await Dogs.findByPk(idRaza, {
+      include: {
+        model: Temperaments,
+        attributes: ["name"],
+        through: {
+            attributes: []
+        },
+    },
+  });
+  return dog;
+  } else {
+  const {data} = await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`);
+  const dog = data.filter((dog) => dog.id === Number(idRaza)); // No me trae imagen cuando uso el ID en el endpoint, por lo cual hago esto como 2da opción
+  const dogByIdApi = dog.map((dog) => ({
       id: dog.id,
+      image: dog.image.url,
       name: dog.name,
-      height: dog.height,
-      weight: dog.weight,
-      temperament: temperaments,
+      height: dog.height.metric,
+      weight: dog.weight.metric,
       life_span: dog.life_span,
-      image: dog.image
-    }  
-}
+      Temperaments: dog.temperament?.split(', ').map((temp) => ({
+          "name": temp
+      })),
+      created: false,
+  }))
+  return dogByIdApi.pop();
+  }
+};
 
 module.exports = {
     getDogs,
