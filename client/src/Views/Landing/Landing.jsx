@@ -4,11 +4,12 @@ import './Landing.css';
 const Landing = () => {
   return (
     <div className='landing'>
-        <div className='container'> 
+        <div className='containerLanding'> 
          <h1>Dogs API</h1>
+         <h4>Thank you for visiting the Dogs page!</h4>
           <button>
              <Link to='/home'>
-                Ingresar
+                Get into
               </Link>
           </button>
         </div>

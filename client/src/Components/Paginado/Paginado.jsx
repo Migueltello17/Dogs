@@ -6,4 +6,4 @@ const Paginado = () => {
   )
 }
 
-export default Paginado
+export default Paginado;

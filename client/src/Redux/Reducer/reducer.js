@@ -1,14 +1,5 @@
-import { 
-    GET_DOGS, 
-    GET_DOG, 
-    GET_DETAILS, 
-    DELETE_DETAILS, 
-    GET_TEMPERAMENTS, 
-    PAGINATE, 
-    FILTER, 
-    ORDER, 
-    FILTERORIGIN, 
-    ORDERBYWEIGHT} from '../Actions/actions-type';
+import { GET_DOGS, GET_DOG, SEARCH_DOG, GET_DETAILS, DELETE_DETAILS, GET_TEMPERAMENTS, PAGINATE, FILTER, ORDER,
+     ORDERBYWEIGHT} from '../Actions/actions-type';
 
     //Inicializar el initialState
 const initialState = {
@@ -41,6 +32,13 @@ switch(action.type){
        return{
         ...state, 
         dog: action.payload}
+
+    case SEARCH_DOG:
+        return{
+        ...state,
+        dogs: action.payload,
+        // dogsFiltered: action.payload
+        }
 
    case GET_DETAILS:
        return{
@@ -89,9 +87,7 @@ switch(action.type){
 
    case FILTER:
        console.log("esto es action.payload", action.payload);
-       
-       let filterByTemperament = [];
-       filterByTemperament = [...state.dogsBackUP].filter((d)=>d.temperament.includes(action.payload));  
+       const filterByTemperament = [...state.dogsBackUP].filter((d) => d.temperaments.includes(action.payload));
        return{
            ...state,
            dogs: filterByTemperament.splice(0, ITEMS_PER_PAGE),
@@ -114,33 +110,20 @@ switch(action.type){
                if(prev.name < next.name) return 1;
                return 0;
            })
-       } else return state;
+       } 
+    //    else return state;
        return{
            ...state,
            dogs: [...orderByName].splice(0, ITEMS_PER_PAGE),
            dogsBackUP: orderByName,
-           
-       }
-   
-   case FILTERORIGIN:
-       let filterByOrigin = [];
-       if(action.payload === 'DBB'){
-           filterByOrigin = [...state.dogsBackUP].filter((d) => isNaN(d.id) );
-       }else if(action.payload === 'API'){
-               filterByOrigin = [...state.dogsBackUP].filter((d) => !isNaN(d.id) );
-       }    
-       return{
-           ...state,
-           dogs: filterByOrigin.splice(0, ITEMS_PER_PAGE),
-           dogsFiltered: filterByOrigin,
-           filter: true, 
+           currentPage:0
        }
 
        
   case ORDERBYWEIGHT:
- const sortedWeight =
-   action.payload === "minWeight"
-     ? state.dogsBackUP.sort((a, b) => {
+        const sortedWeight =
+        action.payload === "minWeight"
+            ? state.dogsBackUP.sort((a, b) => {
          if (parseInt(a.weight.split('-')[1]) > parseInt(b.weight.split('-')[1])) {
            console.log("estos son los pesos", a.weight.split('-')[1])
            return 1;
@@ -150,7 +133,7 @@ switch(action.type){
          }
          return 0;
        })
-     : state.dogsBackUP.sort((a, b) => {
+        : state.dogsBackUP.sort((a, b) => {
          if (parseInt(a.weight.split('-')[1]) > parseInt(b.weight.split('-')[1])) {
            return -1;
          }
@@ -159,9 +142,9 @@ switch(action.type){
          }
          return 0;
        });
- return {
-   ...state,
-   dogs: [...sortedWeight].splice(0, ITEMS_PER_PAGE),
+        return {
+        ...state,
+        dogs: [...sortedWeight].splice(0, ITEMS_PER_PAGE),
     };
    
    

@@ -2,14 +2,14 @@ import axios from 'axios';
 import { 
     GET_DOGS, 
     GET_DOG, 
+    SEARCH_DOG,
     GET_DETAILS, 
     DELETE_DETAILS, 
     GET_TEMPERAMENTS, 
     PAGINATE, 
     FILTER, 
-    ORDER, 
-    FILTERORIGIN, 
-    ORDERBYWEIGHT } from "./actions-type.js";
+    ORDER,  
+    ORDERBYWEIGHT} from "./actions-type.js";
 
 
 export const getDogs = () => {
@@ -35,6 +35,21 @@ export const getDog = (id) => {
         }
     }
 }
+
+export const searchDog = (name) => {
+    return async function (dispatch) {
+      try {
+        const response = await axios(`http://localhost:3001/dogs/?name=${name}`);
+       return dispatch({
+          type: SEARCH_DOG, 
+          payload: response.data, 
+        });
+      } catch (error) {
+        alert("Raza no encontrada");
+      }
+    };
+  };
+
 
 export const getDetails = (id) => {
     return async function(dispatch){
@@ -91,15 +106,16 @@ export const paginateDogs = (order) =>{
     }
 }
 
-export const filterDogsAction = (temperament) =>{
+export const filterDogsAction = (temperaments) =>{
     return async function(dispatch){
-        console.log(temperament)
+        console.log(temperaments)
         try {
             dispatch({
                 type: FILTER,
-                payload: temperament
+                payload: temperaments
             })
         } catch (error) {
+            // alert(error.response.data.error)
         }
     }
 }
@@ -112,19 +128,6 @@ export const orderDogsAction = (order) =>{
                 payload: order
             })
         } catch (error) {  
-            alert(error.response.data.error);
-        }
-    }
-}
-
-export const filterOriginAction = (origin) => {
-    return async function(dispatch){
-        try {
-            dispatch({
-                type: FILTERORIGIN,
-                payload: origin
-            })
-        } catch (error) {
             alert(error.response.data.error);
         }
     }

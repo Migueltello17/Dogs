@@ -1,14 +1,23 @@
-/* .container {
-    display: grid;
+
+.container {
+    display: flex;
     max-height: fit-content;
+    flex-direction: column;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
     gap: 20px; 
-    
+    background: linear-gradient(
+        to left,
+        rgba(163, 228, 166, 0.918) 100%,
+        rgba(0, 128, 128, 1) 0%
+    );
+    text-align: center;
+    align-items: center;
+    max-width: 50%;
+    margin: 10px auto;
 }
 
-.filtersContainer{
-    display: flex;
-    justify-content: space-around;
-    max-width: 50%;
-    margin: 20px auto;
+/* .container {
+    margin: 100;
+    padding: 0;
+    background-color: aqua;
 } */

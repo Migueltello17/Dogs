@@ -27,11 +27,11 @@ const Detail = () => {
       </div>
       <div className='infoContainer'>
         
-          <div><h4>Numero:</h4> {dog.id} </div>
-          <div><h4>Nombre:</h4> {dog.name} </div>
-          <div><h4>Altura: (en cm)</h4> {dog.height} </div>
-          <div><h4>Peso: (en kg)</h4> {dog.weight} </div>
-          <div><h4>Años de vida:</h4> {dog.life_span} </div>
+          <div><h4>Number:</h4> {dog.id} </div>
+          <div><h4>Name:</h4> {dog.name} </div>
+          <div><h4>Height: (en cm)</h4> {dog.height} </div>
+          <div><h4>Weight: (en kg)</h4> {dog.weight} </div>
+          <div><h4>Life Span:</h4> {dog.life_span} </div>
       </div>
     </div>
   )

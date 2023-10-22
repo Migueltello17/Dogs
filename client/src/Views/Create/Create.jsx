@@ -8,14 +8,12 @@ import validate from './validate';
   //Recibe el dispatch de actions
 const Create = () => {
   const dispatch = useDispatch();
-  
-  const temperaments = useSelector((state)=>state.temperaments)
+  const temperaments = useSelector((state) => state.temperaments)
   
   useEffect (()=> {
     dispatch(getTemperaments());
   }, [dispatch]);
 
-  
   const [state, setState] = useState({
     name: "",
     image:"",
@@ -65,17 +63,13 @@ const Create = () => {
   console.log("esto es el input:", state)
   console.log("esto es errors: ", errors)
 
+
   const disabledFunction = () => {
-    let disabled;
-    for(let error in errors){
-      if(errors[error] === "") disabled = false;
-      else {
-        disabled = true;
-        break;
-      }
-    }
-    return disabled;
-  }
+    // Verifica si hay errores en el estado y si algún campo está vacío
+    return Object.values(errors).some((error) => error !== "") ||
+      Object.values(state).some((value) => value === "");
+  };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -99,90 +93,42 @@ const Create = () => {
       ...state,
       temperament: updatedTemperaments,
     });
-
   }
 
   return (
-    <div className='container'>
-      <h1>¡Crea a tu perro!</h1>
-      <h4> Debes completar todos los campos </h4>
+    <div className='image'>
+    <div className='containerCreate'>
+      <h1>¡Create your dog!</h1>
+      <h4> You must complete all fields </h4>
       <form onSubmit={handleSubmit}>
         <div className='formGroup'>
-          <label htmlFor="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={state.name}
-            onChange={handleChange}
-          />
+          <label htmlFor="name">Name:</label>
+          <input type="text" id="name" name="name" value={state.name} onChange={handleChange} />
         </div>
         {errors.name ? <label>{errors.name}</label> : null} 
         
         <div className='formGroup'>
           <label htmlFor="image">image:</label>
-          <input
-            type="text"
-            id="image"
-            name="image"
-            value={state.image}
-            onChange={handleChange}
-          />
+          <input type="text" id="image" name="image" value={state.image} onChange={handleChange} />
         </div>
         {errors.image ? <label>{errors.image}</label> : null}
        
           
         <div className='formGroup'>
-          <label htmlFor="weight">Peso (en kg):</label>
+          <label htmlFor="weight">Weight (kg):</label>
           <div className='minMaxFields'>
-            <input
-              type="text"
-              id="weight_min"
-              name="weight_min"
-              value={state.weight_min}
-              onChange={handleChange}
-              step="1"
-              placeholder="Min"
-              min = '1'
-            />
-            <input
-              type="text"
-              id="weight_max"
-              name="weight_max"
-              value={state.weight_max}
-              onChange={handleChange}
-              step="1"
-              placeholder="Max"
-              min= {state.weight_min}
-            />
+            <input type="text" id="weight_min" name="weight_min" value={state.weight_min} onChange={handleChange} step="1" placeholder="Min" min = '1' />
+            <input type="text" id="weight_max" name="weight_max" value={state.weight_max} onChange={handleChange} step="1" placeholder="Max" min= {state.weight_min} />
           </div>
         </div>
         {errors.weight_min ? <label>{errors.weight_min}</label> : null}
         {errors.weight_max ? <label>{errors.weight_max}</label> : null}
         
         <div className='formGroup'>
-          <label htmlFor="height">Altura (en cm):</label>
+          <label htmlFor="height">Height (cm):</label>
           <div className='minMaxFields'>
-            <input
-              type="text"
-              id="height_min"
-              name="height_min"
-              value={state.height_min}
-              onChange={handleChange}
-              step="1"
-              placeholder="Min"
-              min = '1'
-            />
-            <input
-              type="text"
-              id="height_max"
-              name="height_max"
-              value={state.height_max}
-              onChange={handleChange}
-              step="1"
-              placeholder="Max"
-              min = {state.height_min}
-            />
+            <input type="text" id="height_min" name="height_min" value={state.height_min} onChange={handleChange} step="1" placeholder="Min" min = '1' />
+            <input type="text" id="height_max" name="height_max" value={state.height_max} onChange={handleChange} step="1" placeholder="Max" min = {state.height_min} />
           </div>
         </div>
         {errors.height_min ? <label>{errors.height_min}</label> : null}
@@ -190,43 +136,22 @@ const Create = () => {
 
 
         <div className='formGroup'>
-          <label htmlFor="life_span">Espectativa de vida (en años):</label>
+          <label htmlFor="life_span">Life span (years):</label>
           <div className='minMaxFields'>
-            <input
-              type="number"
-              id="life_span_min"
-              name="life_span_min"
-              value={state.life_span_min}
-              onChange={handleChange}
-              step="1"
-              placeholder="Min"
-              min = '1'
-            />
-            <input
-              type="number"
-              id="life_span_max"
-              name="life_span_max"
-              value={state.life_span_max}
-              onChange={handleChange}
-              step="1"
-              placeholder="Max"
-              min = {state.life_span_min}
-            />
+            <input type="number" id="life_span_min" name="life_span_min" value={state.life_span_min} onChange={handleChange} step="1" placeholder="Min" min = '1' />
+            <input type="number" id="life_span_max" name="life_span_max" value={state.life_span_max} onChange={handleChange} step="1" placeholder="Max" min = {state.life_span_min} />
           </div>
         </div>
         {errors.life_span_min ? <label>{errors.life_span_min}</label> : null}
         {errors.life_span_max ? <label>{errors.life_span_max}</label> : null}
 
         <div className='formGroup'>
-          <label htmlFor="temperament">Temperamento:</label>
-          <select
-            id="temperament"
-            name="temperament"
+          <label htmlFor="temperament">Temperament:</label>
+          <select id="temperament" name="temperament"
             // value={state.temperament} 
-            
             onChange={handleChange}
           >
-            <option value="">Selecciona un temperamento</option>
+            <option value="">Select a temperament</option>
             {temperaments.map((temp, index) => (
               <option key={index} value={temp}>
                 {temp}
@@ -245,6 +170,8 @@ const Create = () => {
         </div>
         <input disabled={disabledFunction()} type="submit" />
       </form>
+    </div>
+
     </div>
   );
 };
