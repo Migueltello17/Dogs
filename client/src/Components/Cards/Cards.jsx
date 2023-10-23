@@ -6,7 +6,7 @@ const Cards = ({dogs}) => {
       return (
     <div className='cardsContainer'>
       {
-        dogs?.map(({id, name, weight, height, life_span, image, Temperaments}) => {
+        dogs?.map(({id, name, weight, height, life_span, image, Temperaments, temperaments}) => {
             return <Card
                 key={id}
                 id={id}
@@ -15,7 +15,8 @@ const Cards = ({dogs}) => {
                 weight={weight}
                 height={height}
                 life_span={life_span}
-                Temperaments={Temperaments}
+                Temperaments={Temperaments || temperaments}
+
                 />
             })
       }

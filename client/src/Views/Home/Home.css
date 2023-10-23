@@ -1,23 +1,23 @@
 
+.home-container {
+    background-image: url("../../Assets/fondoHome2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 260vh;
+    width: 100vw;
+    color: white; /* Asegura que el fondo cubra toda la altura del componente Home */
+  }
+
 .container {
     display: flex;
     max-height: fit-content;
     flex-direction: column;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
     gap: 20px; 
-    background: linear-gradient(
-        to left,
-        rgba(163, 228, 166, 0.918) 100%,
-        rgba(0, 128, 128, 1) 0%
-    );
+    background-color: rgba(255, 255, 255, 0.5);
     text-align: center;
     align-items: center;
     max-width: 50%;
     margin: 10px auto;
+    color: white; 
 }
-
-/* .container {
-    margin: 100;
-    padding: 0;
-    background-color: aqua;
-} */

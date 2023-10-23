@@ -9,8 +9,8 @@ dog:[],
 dogsBackUP: [],
 dogsBackUp2: [],
 detail: [],
-currentPage: 0,
 dogsFiltered:[],
+currentPage: 0,
 filter: false,
 dogsSortedWeight: [],    
 }
@@ -86,8 +86,17 @@ switch(action.type){
    }
 
    case FILTER:
-       console.log("esto es action.payload", action.payload);
-       const filterByTemperament = [...state.dogsBackUP].filter((d) => d.temperaments.includes(action.payload));
+        console.log(state.dogsBackUP)
+       const filterByTemperament = [];
+        state.dogsBackUP?.forEach ((p) => {
+            if(p.Temperaments?.find((t) => t.name === action.payload) || p.temperaments?.find((t) => t.name === action.payload)) {
+                filterByTemperament.push(p);
+                console.log(p.name)
+            }
+        })
+        console.log(filterByTemperament)
+
+       //[...state.dogsBackUP].filter((d) => d.temperaments.includes(action.payload)); 
        return{
            ...state,
            dogs: filterByTemperament.splice(0, ITEMS_PER_PAGE),

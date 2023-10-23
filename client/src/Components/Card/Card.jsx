@@ -2,7 +2,7 @@ import React from 'react'
 import './card.css';
 import { Link } from 'react-router-dom';
 
-const Card = ({name, weight, height, life_span, image, Temperaments, id}) => {
+const Card = ({name, weight, height, life_span, image, Temperaments, temperaments, id}) => {
   return (
     <div className='cardContainer'>
       <Link to={`/details/${id}`}>
@@ -14,7 +14,7 @@ const Card = ({name, weight, height, life_span, image, Temperaments, id}) => {
         <h5>Weight: {weight}</h5>
         <h5>Height: {height}</h5>
         <h5 className = 'card-temperaments'>
-          Temperaments: {Temperaments && Temperaments.map(temperament => temperament.name).join(', ')} </h5>
+          Temperaments: {Temperaments && Temperaments.map(temperament => temperament.name).join(', ') || temperaments && temperaments.map(temperament => temperament.name).join(', ')} </h5>
         <h5>Life span: {life_span}</h5>
         <div className='card-img-cont'>
           <img src={image} alt="imagen dog" />

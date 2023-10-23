@@ -50,7 +50,7 @@ const Home = () => {
     }
 
   return (
-    <div>
+    <div className='home-container'>
       <div className= 'container'>
         <SearchBar handleChange={handleChange} handleSubmit={handleSubmit}/>
         <h4> Filter/Orders: </h4>
@@ -70,11 +70,12 @@ const Home = () => {
         <span> Filter by temperaments: </span>
         <select onChange={filterDogs} name='temperaments'>
         <option value=''> Temperaments </option>
+        
           {temperaments.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
       <div>
-        <h4> Paginate: </h4>
+        {/* <h4> Paginate: </h4> */}
         <button onClick={paginate} name='prev'>Prev</button><button onClick={paginate} name='next'>Next</button>
       </div>
       <h1> Dogs Home </h1>

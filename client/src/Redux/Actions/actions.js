@@ -106,13 +106,12 @@ export const paginateDogs = (order) =>{
     }
 }
 
-export const filterDogsAction = (temperaments) =>{
+export const filterDogsAction = (temperament) =>{
     return async function(dispatch){
-        console.log(temperaments)
         try {
             dispatch({
                 type: FILTER,
-                payload: temperaments
+                payload: temperament
             })
         } catch (error) {
             // alert(error.response.data.error)

@@ -19,20 +19,28 @@ const Detail = () => {
   const dog = useSelector((state) => state.detail);
   console.log("esto es dog de temperament:", dog);
   
+  let arreglo = [];
+  dog?.Temperaments?.map((t) => {arreglo.push(t.name)})
+  dog?.temperaments?.map((t) => {arreglo.push(t.name)})
+  
+  const temperamentsString = arreglo.join(' - ');
 
   return (
+    <div className='detail-image' >
     <div className='detailContainer' >
-      <div  >
+      <div>
         <img className='imgContainer' src={dog.image} alt={dog.name} />
       </div>
       <div className='infoContainer'>
-        
           <div><h4>Number:</h4> {dog.id} </div>
           <div><h4>Name:</h4> {dog.name} </div>
           <div><h4>Height: (en cm)</h4> {dog.height} </div>
           <div><h4>Weight: (en kg)</h4> {dog.weight} </div>
           <div><h4>Life Span:</h4> {dog.life_span} </div>
+          <div><h4>Temperaments:</h4> {temperamentsString} </div>
       </div>
+    </div>
+    
     </div>
   )
   
