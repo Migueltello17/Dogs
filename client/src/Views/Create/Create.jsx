@@ -67,7 +67,7 @@ const Create = () => {
   const disabledFunction = () => {
     // Verifica si hay errores en el estado y si algún campo está vacío
     return Object.values(errors).some((error) => error !== "") ||
-      Object.values(state).some((value) => value === "");
+      Object.values(state).some((value) => value === "")
   };
 
 
