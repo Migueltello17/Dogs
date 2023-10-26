@@ -151,7 +151,7 @@ const Create = () => {
             // value={state.temperament} 
             onChange={handleChange}
           >
-            <option value="">Select a temperament</option>
+            <option value="" selected>Select a temperament</option>
             {temperaments.map((temp, index) => (
               <option key={index} value={temp}>
                 {temp}
@@ -168,7 +168,7 @@ const Create = () => {
           </span>
         ))}
         </div>
-        <input disabled={disabledFunction()} type="submit" />
+        <input disabled={disabledFunction() || state.temperament.length === 0} type="submit" />
       </form>
     </div>
 

@@ -13,7 +13,7 @@ const SearchBar = ({ handleChange, handleSubmit }) => {
     <div className='navbar-search-cont'>
     <form>
           <input 
-          placeholder='Search here' 
+          placeholder='Search name here' 
           type='search' 
           value={searchText}
           onChange= {handleInputChange}

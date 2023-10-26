@@ -1,10 +1,10 @@
 
 .home-container {
-    background-image: url("../../Assets/fondoHome2.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
     height: 260vh;
     width: 100vw;
+    display: inline-block;
+    background: #000 url("../../Assets/fondoHome2.jpg") no-repeat center;
+    background-size: cover;
     color: white; /* Asegura que el fondo cubra toda la altura del componente Home */
   }
 
