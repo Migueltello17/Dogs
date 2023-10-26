@@ -10,11 +10,12 @@ const Create = () => {
   const dispatch = useDispatch();
   const temperaments = useSelector((state) => state.temperaments)
   
+  //Obtiene la lista de temperaments
   useEffect (()=> {
     dispatch(getTemperaments());
   }, [dispatch]);
 
-  const [state, setState] = useState({
+  const [state, setState] = useState({ //Almacena las propiedades de los campos y errores de valid
     name: "",
     image:"",
     height_min: "",
@@ -38,6 +39,7 @@ const Create = () => {
     temperament: "",
   });
   
+  // Actualiza el estado con los nuevos valores 
   const handleChange = (event) => {
     if(event.target.name === 'temperament'){
       if(state.temperament.includes(event.target.value)) return;
@@ -70,10 +72,10 @@ const Create = () => {
       Object.values(state).some((value) => value === "")
   };
 
-
+  // Se ejecuta cuando se envia la info. 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(postDog(state));
+    dispatch(postDog(state)); //Envia los datos del nuevo perro al servidor
     setState({
       name: "",
       image: "",
@@ -87,6 +89,7 @@ const Create = () => {
     });
   }
 
+  //Elimina el temperament seleccionado con un click.
   const handleDelete = (temperamentName) => {
     const updatedTemperaments = state.temperament.filter((temp) => temp !== temperamentName);
     setState({

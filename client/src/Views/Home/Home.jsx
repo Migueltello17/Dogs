@@ -79,6 +79,7 @@ const Home = () => {
         <button onClick={paginate} name='prev'>Prev</button><button onClick={paginate} name='next'>Next</button>
       </div>
       <h1> Dogs Home </h1>
+      <button onClick={() => window.location.reload()} >Refresh</button>
       <Cards dogs={dogs} />
     </div>
   )
