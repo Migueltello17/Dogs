@@ -1,9 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux';
+import { setPage } from '../../Redux/Actions/actions';
 
-const Paginado = () => {
-  return (
-    <div>Paginado</div>
-  )
-}
+function Paginado({ currentPage, totalPages }) {
+    return (
+            <div>
+                <span>Page {currentPage} of {totalPages} 22 </span>
+            </div>
+    );
+};
 
-export default Paginado;
+const mapStateToProps = (state) => ({
+    currentPage: state.currentPage,
+    totalPages: state.totalPages,
+});
+
+const mapDispatchToProps = {
+    setPage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Paginado);

@@ -29,7 +29,7 @@ const Create = () => {
   
   const [errors, setErrors] = useState({
     name: "",
-    image:"",
+    // image:"",
     height_min: "",
     height_max: "",
     weight_min: "",
@@ -114,7 +114,7 @@ const Create = () => {
           <label htmlFor="image">image:</label>
           <input type="text" id="image" name="image" value={state.image} onChange={handleChange} />
         </div>
-        {errors.image ? <label>{errors.image}</label> : null}
+        {/* {errors.image ? <label>{errors.image}</label> : null} */}
        
           
         <div className='formGroup'>

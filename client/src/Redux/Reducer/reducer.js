@@ -1,4 +1,5 @@
-import { GET_DOGS, GET_DOG, SEARCH_DOG, GET_DETAILS, DELETE_DETAILS, GET_TEMPERAMENTS, PAGINATE, FILTER, ORDER,
+import { GET_DOGS, GET_DOG, SEARCH_DOG, GET_DETAILS, DELETE_DETAILS, GET_TEMPERAMENTS, PAGINATE,SET_PAGE, 
+    SET_TOTAL_PAGE, FILTER, FILTERORIGIN, ORDER,
      ORDERBYWEIGHT} from '../Actions/actions-type';
 
     //Inicializar el initialState
@@ -10,7 +11,7 @@ dogsBackUP: [],
 dogsBackUp2: [],
 detail: [],
 dogsFiltered:[],
-currentPage: 0,
+currentPage: 1,
 filter: false,
 dogsSortedWeight: [],    
 }
@@ -58,32 +59,42 @@ switch(action.type){
            temperaments: action.payload
        }
    }
+   case SET_TOTAL_PAGE: //Reducer para actualizar total de páginas
+   return {
+       ...state,
+       totalNumberOfPages: Math.ceil(state.dogsFiltered.length / 8)
+   };
+case SET_PAGE: //Reducer para actualizar página actual
+   return {
+       ...state,
+       currentPage: action.payload
+   };
 
-   case PAGINATE:{
-       const next_page = state.currentPage + 1;
-       const prev_page = state.currentPage - 1;
-       const firstIndex = action.payload === 'next' ? next_page * ITEMS_PER_PAGE : prev_page * ITEMS_PER_PAGE;
 
-       if(state.filter){
-           if(action.payload === 'next' && firstIndex >= state.dogsFiltered.length) return state;
-           else if(action.payload === 'prev' && prev_page < 0) return state;
-           
-           return {
-               ...state,
-               dogs:[...state.dogsFiltered].splice(firstIndex, ITEMS_PER_PAGE),
-               currentPage: action.payload === 'next'? next_page : prev_page                                
-           }
-       }
-       console.log("prev:---------------------------- ", prev_page)
-       if(action.payload === 'next' && firstIndex >= state.dogsBackUP.length) return state;
-       else if(action.payload === 'prev' && prev_page < 0) return state;
-
-       return {
-           ...state,
-           dogs:[...state.dogsBackUP].splice(firstIndex, ITEMS_PER_PAGE),
-           currentPage: action.payload === 'next'? next_page : prev_page                                
-       }
-   }
+   case PAGINATE: {
+    const currentPage = action.payload;
+    const itemsPerPage = 8; // Cantidad de elementos por página
+    const firstIndex = (currentPage - 1) * itemsPerPage;
+  
+    if (state.filter) {
+      if (firstIndex >= state.dogsFiltered.length || firstIndex < 0) return state;
+  
+      return {
+        ...state,
+        dogs: [...state.dogsFiltered].slice(firstIndex, firstIndex + itemsPerPage),
+        currentPage,
+      };
+    }
+  
+    if (firstIndex >= state.dogsBackUP.length || firstIndex < 0) return state;
+  
+    return {
+      ...state,
+      dogs: [...state.dogsBackUP].slice(firstIndex, firstIndex + itemsPerPage),
+      currentPage,
+    };
+  }
+  
 
    case FILTER:
         console.log(state.dogsBackUP)
@@ -125,9 +136,24 @@ switch(action.type){
            ...state,
            dogs: [...orderByName].splice(0, ITEMS_PER_PAGE),
            dogsBackUP: orderByName,
-           currentPage:0
+           currentPage: 1
        }
 
+    case FILTERORIGIN:
+        let filterByOrigin = [];
+        if(action.payload === 'DBB'){
+            filterByOrigin = [...state.dogsBackUP].filter((d) => isNaN(d.id) );
+        }else if(action.payload === 'API'){
+            filterByOrigin = [...state.dogsBackUP].filter((d) => !isNaN(d.id) );
+        }
+                
+                 
+        return{
+        ...state,
+        dogs: filterByOrigin.splice(0, ITEMS_PER_PAGE),
+        dogsFiltered: filterByOrigin,
+        filter: true, 
+        }
        
   case ORDERBYWEIGHT:
         const sortedWeight =

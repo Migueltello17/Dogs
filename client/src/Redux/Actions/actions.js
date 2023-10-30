@@ -6,10 +6,14 @@ import {
     GET_DETAILS, 
     DELETE_DETAILS, 
     GET_TEMPERAMENTS, 
+    SET_PAGE, 
+    SET_TOTAL_PAGE,
     PAGINATE, 
     FILTER, 
+    FILTERORIGIN,
     ORDER,  
-    ORDERBYWEIGHT} from "./actions-type.js";
+    ORDERBYWEIGHT,
+} from "./actions-type.js";
 
 
 export const getDogs = () => {
@@ -93,21 +97,49 @@ export const postDog = (state) => {
     }
 }
 
-export const paginateDogs = (order) =>{
-    return async function(dispatch){
-        try {
-            dispatch({
-                type: PAGINATE,
-                payload: order
-            })
-        } catch (error) {
-            alert(error.response.data.error);
-        }
-    }
+// Acción para traer definir el total de páginas
+export function setTotalPage() {
+    return {
+        type: SET_TOTAL_PAGE,
+    };
 }
 
+// Acción para traer definir página actual
+export const setPage = (pageNumber) => ({
+    type: SET_PAGE,
+    payload: pageNumber,
+});
+
+export const paginateDogs = (order) => {
+    return async function (dispatch, getState) {
+      try {
+        const state = getState(); // Obtener el estado actual
+        const currentPage = state.currentPage; // Obtener la página actual
+  
+        if (order === 'next') {
+          // Si se hizo clic en "Next"
+          const nextPage = currentPage + 1;
+          dispatch({
+            type: PAGINATE,
+            payload: nextPage,
+          });
+        } else if (order === 'prev') {
+          // Si se hizo clic en "Prev"
+          const prevPage = currentPage - 1;
+          dispatch({
+            type: PAGINATE,
+            payload: prevPage,
+          });
+        }
+      } catch (error) {
+        alert(error.response.data.error);
+      }
+    };
+  };
+  
+
 export const filterDogsAction = (temperament) =>{
-    return async function(dispatch){
+    return async function(dispatch, getState){
         try {
             dispatch({
                 type: FILTER,
@@ -115,6 +147,19 @@ export const filterDogsAction = (temperament) =>{
             })
         } catch (error) {
             // alert(error.response.data.error)
+        }
+    }
+}
+
+export const filterOriginAction = (origin) => {
+    return async function(dispatch){
+        try {
+            dispatch({
+                type: FILTERORIGIN,
+                payload: origin
+            })
+        } catch (error) {
+            
         }
     }
 }

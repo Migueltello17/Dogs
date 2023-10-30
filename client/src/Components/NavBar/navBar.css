@@ -1,34 +1,48 @@
-.navbar-cont{
-    display: flex;
-    background-color: rgba(216, 233, 217, 0.918);
-    justify-content: space-around;
-    align-items: center;
-    width: 100vw;
+/* Estilos para la barra de navegación */
+.navbar-cont {
+  display: flex;
+  background-color: rgba(216, 233, 217, 0.918);
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
 }
 
-.navbar-img-cont img{
-    width: 3rem;
+.navbar-img-cont img {
+  width: 3rem;
 }
 
-.navbar-links-cont{
-    display: flex;
-    justify-content: space-between;
-    width: 15rem;
+.navbar-links-cont {
+  display: flex;
+  justify-content: space-between;
+  width: 15rem;
 }
 
-.navbar-search-cont {
-    display: flex; /* Utiliza Flexbox para alinear los elementos horizontalmente */
-    align-items: center; /* Alinea verticalmente los elementos al centro */
-  }
-  
-  .navbar-search-cont input {
-    margin-right: 10px; /* Agrega un margen a la derecha del campo de búsqueda */
-  }
-  
-  
-  .search-icon {
-    color: #000000;
-    margin-right: 8px; /* Espacio entre el ícono y el campo de entrada */
-    width: 16px; /* Ancho del ícono */
-    height: 16px; /* Altura del ícono */
-  }
+/* Estilos para los enlaces del menú con efecto de contorno y luz blanca */
+.nav-link {
+  text-decoration: none; /* Elimina la subrayado predeterminado de los enlaces */
+  color: #000000; /* Color del texto */
+  position: relative; /* Para que el elemento sea el punto de origen del efecto de luz */
+
+  transition: transform 0.3s, box-shadow 0.3s; /* Transiciones para la elevación y el contorno */
+
+  display: inline-block;
+  padding: 5px; /* Espacio alrededor del texto */
+}
+
+.nav-link:hover {
+  transform: translateY(-2px); /* Eleva el texto ligeramente en hover */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Contorno con luz blanca */
+}
+
+/* Estilos para el enlace activo (página actual) */
+.active {
+  font-weight: bold; /* Otra modificación de estilo, si lo deseas */
+}
+
+/* Estilos para la barra debajo de la palabra en el enlace activo */
+.active span {
+  display: block;
+  height: 3px; /* Altura de la barra */
+  background-color: rgba(216, 233, 217, 0.918); /* Color de la barra de resaltado */
+}
+

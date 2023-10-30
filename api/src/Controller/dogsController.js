@@ -69,7 +69,7 @@ const createNewDog = async (image, name, weight_min, weight_max, height_min, hei
   const weight = `${weight_min} - ${weight_max}`;
   const life_span = `${life_span_min} - ${life_span_max} years`;
   const newDog = await Dogs.create({
-    image: image,
+    image: image? image:'https://i.pinimg.com/originals/4c/fd/ae/4cfdae9b1148b654e689f73b4f414aa3.jpg',
     name: name,
     weight: weight,
     height: height,

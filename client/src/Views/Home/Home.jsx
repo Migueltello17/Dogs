@@ -1,11 +1,19 @@
 import React, { useState } from 'react'
 import Cards from '../../Components/Cards/Cards';
 import SearchBar from '../SearchBar/SearchBar';
+import Paginado from '../../Components/Paginado/Paginado';
 import './Home.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; 
-import { filterDogsAction, getDogs, getTemperaments, 
-  orderDogsAction, paginateDogs, orderByWeightAction, searchDog } from '../../Redux/Actions/actions';
+import { 
+  filterDogsAction, 
+  getDogs, 
+  getTemperaments,
+  orderDogsAction, 
+  paginateDogs, 
+  filterOriginAction, 
+  orderByWeightAction, 
+  searchDog } from '../../Redux/Actions/actions';
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -13,8 +21,10 @@ const Home = () => {
     const dogs = useSelector((state)=> state.dogs);
     const temperaments = useSelector((state) => state.temperaments);
     const [searchString, setSearchString] = useState(" ");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
 
-
+    
     useEffect(()=>{
         dispatch(getDogs());
         dispatch(getTemperaments());
@@ -33,26 +43,47 @@ const Home = () => {
       dispatch(searchDog(searchString))
     }
     
-    const paginate = (event) =>{
-      dispatch(paginateDogs(event.target.name));
-    }
+    const paginate = (event) => {
+      const action = event.target.name;
+      let newPage = currentPage;
+    
+      if (action === 'prev' && currentPage > 1) {
+        newPage = currentPage - 1;
+      } else if (action === 'next' && currentPage < totalNumberOfPages) {
+        newPage = currentPage + 1;
+      }
+    
 
+      setCurrentPage(newPage);
+      dispatch(paginateDogs(action));
+    };
+  
     const filterDogs = (event) =>{
-      dispatch(filterDogsAction(event.target.value));
+      const selectedTemperament = event.target.value;
+      dispatch(filterDogsAction(selectedTemperament));
     }
     
-    const orderDogsAlf = (event) => {
-      dispatch(orderDogsAction(event.target.value));
+    const filterOrigin = (event) => {
+      dispatch(filterOriginAction(event.target.value))
     }
+
+    const orderDogsAlf = (event) => {
+      const selectedOrder = event.target.value;
+      dispatch(orderDogsAction(selectedOrder));
+        }
 
     const orderByWeight = (event) => {
       dispatch(orderByWeightAction(event.target.value))
     }
 
+    const totalNumberOfPages = Math.ceil(dogs.length / itemsPerPage);
+
+
   return (
     <div className='home-container'>
       <div className= 'container'>
-        <SearchBar handleChange={handleChange} handleSubmit={handleSubmit}/>
+      <SearchBar handleChange={handleChange} handleSubmit={handleSubmit}/>
+
         <h4> Filter/Orders: </h4>
         <span> Order dogs alf: </span>
         <select onClick={orderDogsAlf}>
@@ -73,13 +104,23 @@ const Home = () => {
         
           {temperaments.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
+
+        <span> Filter by origin:</span>
+        <select onClick={filterOrigin}>
+          <option value='API'>API</option>
+          <option value='DBB'>DBB</option>
+        </select>
       </div>
       <div>
-        {/* <h4> Paginate: </h4> */}
-        <button onClick={paginate} name='prev'>Prev</button><button onClick={paginate} name='next'>Next</button>
+      {dogs.length > 0 ? (
+                <Paginado />
+            ) : (<h4>Dogs not found</h4>)}
+
+        <button onClick={paginate} name='prev'>Prev</button>
+        <button onClick={paginate} name='next'>Next</button>
       </div>
       <h1> Dogs Home </h1>
-      <button onClick={() => window.location.reload()} >Refresh</button>
+      <button onClick={() => window.location.reload()} >Cleaner</button>
       <Cards dogs={dogs} />
     </div>
   )

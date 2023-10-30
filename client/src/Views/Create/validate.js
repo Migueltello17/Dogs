@@ -2,7 +2,7 @@ const validate = (input) => {
     
     let errors={};
     const regexName = /^[A-Za-z]+$/;
-    const regexUrl = /^https?:\/\/\S+\.(?:png|jpe?g|gif|webp|bmp)$/i;
+    // const regexUrl = /^https?:\/\/\S+\.(?:png|jpe?g|gif|webp|bmp)$/i;
     const regexNum = /^\d+(\.\d+)?$/;
 
     //validacion del nombre
@@ -10,9 +10,9 @@ const validate = (input) => {
     if (!input.name.length) errors.name = "Debe ingresar un nombre";
 
     //validacion imagen
-    if(!regexUrl.test(input.image)) errors.image = 'Debe ingresar una URL válida';
+    // if(!regexUrl.test(input.image)) errors.image = 'Debe ingresar una URL válida';
     //else errors.image = "";
-    if(!input.image) errors.image = 'Debe ingresar URL  de imagen';
+    // if(!input.image) errors.image = 'Debe ingresar URL  de imagen';
 
     //validacion weight
     if(!regexNum.test(input.weight_min)) errors.weight_min = 'solo puede ingresar  números';
