@@ -22,14 +22,13 @@ const Home = () => {
     const temperaments = useSelector((state) => state.temperaments);
     const [searchString, setSearchString] = useState(" ");
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8;
+    const itemsPerPage = useState (8);
 
     
     useEffect(()=>{
-        dispatch(getDogs());
-        dispatch(getTemperaments());
-        // eslint-disable-next-line
-    },[]);
+        dispatch(getDogs(dogs));
+        dispatch(getTemperaments(temperaments));
+    }, []);
 
     
     function handleChange(e) {
@@ -86,7 +85,7 @@ const Home = () => {
 
         <h4> Filter/Orders: </h4>
         <span> Order dogs alf: </span>
-        <select onClick={orderDogsAlf}>
+        <select onChange={orderDogsAlf}>
           <option value="AZ">A-Z</option>
           <option value="ZA">Z-A</option>
         </select>
@@ -106,16 +105,13 @@ const Home = () => {
         </select>
 
         <span> Filter by origin:</span>
-        <select onClick={filterOrigin}>
+        <select onChange={filterOrigin}>
           <option value='API'>API</option>
           <option value='DBB'>DBB</option>
         </select>
       </div>
       <div>
-      {dogs.length > 0 ? (
-                <Paginado />
-            ) : (<h4>Dogs not found</h4>)}
-
+      <Paginado />
         <button onClick={paginate} name='prev'>Prev</button>
         <button onClick={paginate} name='next'>Next</button>
       </div>

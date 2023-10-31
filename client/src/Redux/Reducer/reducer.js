@@ -1,5 +1,16 @@
-import { GET_DOGS, GET_DOG, SEARCH_DOG, GET_DETAILS, DELETE_DETAILS, GET_TEMPERAMENTS, PAGINATE,SET_PAGE, 
-    SET_TOTAL_PAGE, FILTER, FILTERORIGIN, ORDER,
+import { 
+    GET_DOGS, 
+    GET_DOG, 
+    SEARCH_DOG, 
+    GET_DETAILS, 
+    DELETE_DETAILS, 
+    GET_TEMPERAMENTS, 
+    PAGINATE,
+    SET_PAGE, 
+    SET_TOTAL_PAGE, 
+    FILTER, 
+    FILTERORIGIN, 
+    ORDER,
      ORDERBYWEIGHT} from '../Actions/actions-type';
 
     //Inicializar el initialState
@@ -98,7 +109,7 @@ case SET_PAGE: //Reducer para actualizar página actual
 
    case FILTER:
         console.log(state.dogsBackUP)
-       const filterByTemperament = [];
+       let filterByTemperament = [];
         state.dogsBackUP?.forEach ((p) => {
             if(p.Temperaments?.find((t) => t.name === action.payload) || p.temperaments?.find((t) => t.name === action.payload)) {
                 filterByTemperament.push(p);
@@ -138,6 +149,8 @@ case SET_PAGE: //Reducer para actualizar página actual
            dogsBackUP: orderByName,
            currentPage: 1
        }
+
+       
 
     case FILTERORIGIN:
         let filterByOrigin = [];

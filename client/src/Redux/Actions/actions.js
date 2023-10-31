@@ -12,8 +12,7 @@ import {
     FILTER, 
     FILTERORIGIN,
     ORDER,  
-    ORDERBYWEIGHT,
-} from "./actions-type.js";
+    ORDERBYWEIGHT,} from "./actions-type.js";
 
 
 export const getDogs = () => {
@@ -189,3 +188,4 @@ export const orderByWeightAction = (order) =>{
         }
     };
 };
+
