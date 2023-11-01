@@ -75,7 +75,7 @@ switch(action.type){
        ...state,
        totalNumberOfPages: Math.ceil(state.dogsFiltered.length / 8)
    };
-case SET_PAGE: //Reducer para actualizar página actual
+    case SET_PAGE: //Reducer para actualizar página actual
    return {
        ...state,
        currentPage: action.payload
@@ -83,10 +83,11 @@ case SET_PAGE: //Reducer para actualizar página actual
 
 
    case PAGINATE: {
-    const currentPage = action.payload;
+    const currentPage = action.payload; //Pagina que se desea navegar
     const itemsPerPage = 8; // Cantidad de elementos por página
     const firstIndex = (currentPage - 1) * itemsPerPage;
   
+    // Si hay un filtro activo y el indice está fuera de los limites de la lista o es 0 = retorna el estado sin cambios
     if (state.filter) {
       if (firstIndex >= state.dogsFiltered.length || firstIndex < 0) return state;
   
@@ -96,7 +97,7 @@ case SET_PAGE: //Reducer para actualizar página actual
         currentPage,
       };
     }
-  
+    // Si no hay un filtro activo y el firstIndex está fuera  de los limites de lista de perros o es 0 = retorna el estado actual sin cambios.
     if (firstIndex >= state.dogsBackUP.length || firstIndex < 0) return state;
   
     return {
@@ -105,7 +106,7 @@ case SET_PAGE: //Reducer para actualizar página actual
       currentPage,
     };
   }
-  
+  // Si el firstIndex es valido, se crea una copia del estado, se muestra la lista de perros de la pagina actual
 
    case FILTER:
         console.log(state.dogsBackUP)
@@ -129,14 +130,15 @@ case SET_PAGE: //Reducer para actualizar página actual
 
    case ORDER:
        let orderByName = [];
+       let filtered = state.filter ? state.dogsFiltered : state.dogsBackUP
        if(action.payload === "AZ"){
-           orderByName = [...state.dogsBackUP].sort((prev, next) =>{
+           orderByName = [...filtered].sort((prev, next) =>{
                if(prev.name > next.name) return 1;
                if(prev.name < next.name) return -1;
                return 0;
            })
        } else if (action.payload === "ZA"){
-           orderByName = [...state.dogsBackUP].sort((prev, next) =>{
+           orderByName = [...filtered].sort((prev, next) =>{
                if(prev.name > next.name) return -1;
                if(prev.name < next.name) return 1;
                return 0;
@@ -147,6 +149,7 @@ case SET_PAGE: //Reducer para actualizar página actual
            ...state,
            dogs: [...orderByName].splice(0, ITEMS_PER_PAGE),
            dogsBackUP: orderByName,
+           dogsFiltered: orderByName,
            currentPage: 1
        }
 

@@ -20,16 +20,22 @@ const Home = () => {
 
     const dogs = useSelector((state)=> state.dogs);
     const temperaments = useSelector((state) => state.temperaments);
-    const [searchString, setSearchString] = useState(" ");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [searchString, setSearchString] = useState(" "); //Estado que almacena cadena de texto (blanco)
+    const [currentPage, setCurrentPage] = useState(1); //Estado que almacena el estado de la pagina actual
     const itemsPerPage = useState (8);
-
+    const backUp = useSelector((state) => state.dogsBackUP); //Almacena el estado de respaldo de perros
+    const filtered = useSelector((state) => state.dogsFiltered); //Almacena el estado de la lista de perros filtrados
     
+    // Recuperacion de datos de servidor
     useEffect(()=>{
-        dispatch(getDogs(dogs));
-        dispatch(getTemperaments(temperaments));
+        dispatch(getDogs());
+        dispatch(getTemperaments());
     }, []);
 
+    // Se activa cuando cambian estas dos dependencias
+    useEffect (() => {
+    }, [backUp, filtered])
+    
     
     function handleChange(e) {
       e.preventDefault();
@@ -44,12 +50,12 @@ const Home = () => {
     
     const paginate = (event) => {
       const action = event.target.name;
-      let newPage = currentPage;
+      let newPage = currentPage; //Seguimiento de la pagina actual de navegacion
     
-      if (action === 'prev' && currentPage > 1) {
-        newPage = currentPage - 1;
-      } else if (action === 'next' && currentPage < totalNumberOfPages) {
-        newPage = currentPage + 1;
+      if (action === 'prev' && currentPage > 1) { //Si currentPage es mayor a 1...
+        newPage = currentPage - 1; // Pagina anterior= prev
+      } else if (action === 'next' && currentPage < totalNumberOfPages) { //Si currentPage es menor al total
+        newPage = currentPage + 1; // Pagina posterior = next
       }
     
 
@@ -75,6 +81,7 @@ const Home = () => {
       dispatch(orderByWeightAction(event.target.value))
     }
 
+    // Cantidad de perros dividido cantidad de elementos por pagina (8). Redondea hacia arriba.
     const totalNumberOfPages = Math.ceil(dogs.length / itemsPerPage);
 
 

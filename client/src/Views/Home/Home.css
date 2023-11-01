@@ -1,10 +1,11 @@
 
 .home-container {
-    height: 260vh;
+    min-height: 260vh;
     width: 100vw;
     display: inline-block;
-    background: #000 url("../../Assets/fondoHome2.jpg") no-repeat center;
+    background-image: url("../../Assets/fondoHome2.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
     color: white;
   }
 
